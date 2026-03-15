@@ -1,0 +1,8 @@
+*.csv
+*.xlsx
+
+*.sqlite
+*.mdf
+*.ldf
+
+.idea/
