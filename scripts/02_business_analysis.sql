@@ -24,3 +24,37 @@ GROUP BY
         ELSE '3. Regular / Low Spender'
     END
 ORDER BY customer_segment;
+
+
+WITH ProductSales AS (
+    SELECT
+        p.product_category,
+        p.product_sku,
+        MAX(p.product_description) AS product_name,
+        SUM(t.quantity) AS total_quantity_sold,
+        SUM(t.online_spend + t.offline_spend) AS total_revenue
+    FROM transactions t
+    JOIN products p ON t.product_sku = p.product_sku
+    GROUP BY p.product_category, p.product_sku
+),
+RankedProducts AS (
+    SELECT
+        product_category,
+        product_sku,
+        product_name,
+        total_quantity_sold,
+        total_revenue,
+        ROW_NUMBER() OVER(PARTITION BY product_category ORDER BY total_quantity_sold DESC) AS category_rank
+    FROM ProductSales
+    WHERE product_category IS NOT NULL
+)
+SELECT
+    product_category,
+    category_rank,
+    product_sku,
+    product_name,
+    total_quantity_sold,
+    total_revenue
+FROM RankedProducts
+WHERE category_rank <= 3
+ORDER BY product_category, category_rank;
