@@ -82,4 +82,4 @@ Focuses on customer behavior, demographic mapping, and basket size analysis (DAX
 ![Customer Insights](power_bi/03_customer.png)
 
 ### Files
-* The interactive dashboard file can be found in the `power_bi` folder (`ecommerce_sales_dashboard.pbit`).
+* The interactive dashboard file can be found in the `power_bi` folder (`ecommerce_sales_dashboard.pbit`)
