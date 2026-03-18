@@ -62,3 +62,24 @@ The final phase of the project transitions from ad-hoc analytical querying to bu
    * **Objective:** Automate repetitive monthly marketing reports regarding discount code performance.
    * **Technical Implementation:** Developed a parameterized **Stored Procedure** using `CREATE OR ALTER PROCEDURE`. It accepts an input variable (`@ReportMonth INT`) to dynamically filter transaction records and aggregate coupon usage and revenue.
    * **Business Value:** Replaces manual query rewriting. The marketing team can now generate accurate, month-specific promotional reports on demand by simply executing the procedure with their desired month (e.g., `EXEC sp_GetCouponReportByMonth @ReportMonth = 8`).
+
+## Stage 4: Data Visualization & Dashboard (Power BI)
+
+The final stage of the project involved connecting Power BI to the SQL Server database to visualize the cleaned data and SQL views. The goal was to create an interactive dashboard for Sales and Marketing executives.
+
+### Dashboard Architecture
+
+**1. Executive Summary**
+High-level KPIs ($250M Revenue, 25k+ orders), revenue trends over time, and Online vs Offline sales distribution.
+![Executive Summary](power_bi/01_executive.png)
+
+**2. Product & Marketing**
+Deep dive into product performance and promotional codes. Utilizes the SQL views to rank top products per category and a treemap to evaluate coupon code effectiveness.
+![Product & Marketing](power_bi/02_product.png)
+
+**3. Customer Insights**
+Focuses on customer behavior, demographic mapping, and basket size analysis (DAX `SWITCH` logic). The highlight is the **RFM Segmentation** (Recency, Frequency, Monetary) calculated entirely on the SQL Server side using window functions (`NTILE()`), splitting users into actionable groups like VIPs and Lost Customers.
+![Customer Insights](power_bi/03_customer.png)
+
+### Files
+* The interactive dashboard file can be found in the `power_bi` folder (`ecommerce_sales_dashboard.pbit`).
