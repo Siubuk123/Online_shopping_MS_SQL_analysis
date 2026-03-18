@@ -21,12 +21,6 @@ Due to the strictness of the **MS SQL Server** engine when handling raw data typ
 
 ## Stage 2: Business Analysis (`02_business_analysis.sql`)
 
-The second phase of the project focuses on extracting actionable business value from the newly structured database. By leveraging advanced T-SQL querying techniques, the script uncovers customer behavior patterns, revenue drivers, and product performance.
-
-### Key Analytical Reports
-
-## Stage 2: Business Analysis (`02_business_analysis.sql`)
-
 The second phase of the project is dedicated to extracting actionable business intelligence from the structured database. The analysis covers sales trends, product performance, purchasing behavior, and advanced customer segmentation.
 
 ### Key Analytical Reports & Insights
