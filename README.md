@@ -53,7 +53,18 @@ The second phase of the project is dedicated to extracting actionable business i
    * **Business Insight:** The model successfully identified key segments, pinpointing elite **"1. VIPs"** (scoring 4-4-4). For example, top VIP customers generated individual lifetime values exceeding $2.5M to $3M across hundreds of separate orders, indicating highly lucrative, long-term corporate partnerships.
 
 
-### SQL Techniques Highlighted
-* **Window Functions:** `ROW_NUMBER()`, `OVER()`, and `PARTITION BY` for complex, localized ranking without losing row-level details.
-  * **Common Table Expressions (CTEs):** `WITH` clause used extensively to break down multi-step calculations into readable, modular blocks and avoid code duplication in `GROUP BY` clauses.
-* **Advanced Aggregation & Logics:** Combining `COUNT(DISTINCT ...)`, `SUM()`, and `CASE WHEN` for dynamic data bucketing.
+## Stage 3: Database Architecture & Automation (`03_views_and_procedures.sql`)
+
+The final phase of the project transitions from ad-hoc analytical querying to building reusable, scalable database objects. By creating Views and Stored Procedures, the project demonstrates how to package complex SQL logic into automated tools for end-users and Business Intelligence (BI) applications.
+
+### Key Database Objects Created
+
+1. **Business Intelligence View (`vw_TopProductsPerCategory`):**
+   * **Objective:** Encapsulate complex ranking logic into a simple, easily queryable virtual table, ideal for direct connection to visualization tools like **Power BI** or **Tableau**.
+   * **Technical Implementation:** Utilized `CREATE OR ALTER VIEW` combined with **CTEs** and **Window Functions** (`ROW_NUMBER() OVER(PARTITION BY ...)`). The logic automatically ranks products within their respective categories based on total quantity sold and filters for the Top 3.
+   * **Business Value:** Stakeholders or reporting tools can now access the localized bestseller list instantly using a simple `SELECT * FROM vw_TopProductsPerCategory`, completely hiding the underlying backend complexity.
+
+2. **Automated Reporting Procedure (`sp_GetCouponReportByMonth`):**
+   * **Objective:** Automate repetitive monthly marketing reports regarding discount code performance.
+   * **Technical Implementation:** Developed a parameterized **Stored Procedure** using `CREATE OR ALTER PROCEDURE`. It accepts an input variable (`@ReportMonth INT`) to dynamically filter transaction records and aggregate coupon usage and revenue.
+   * **Business Value:** Replaces manual query rewriting. The marketing team can now generate accurate, month-specific promotional reports on demand by simply executing the procedure with their desired month (e.g., `EXEC sp_GetCouponReportByMonth @ReportMonth = 8`).
