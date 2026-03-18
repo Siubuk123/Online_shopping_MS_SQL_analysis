@@ -66,41 +66,5 @@ WHERE coupon_code IS NOT NULL
 GROUP BY coupon_code
 ORDER BY revenue DESC;
 
--- RFM analysis
-WITH RFM_Base AS (
-    SELECT
-        customer_id,
-        DATEDIFF(day, MAX(transaction_date), (SELECT MAX(transaction_date) FROM transactions)) AS Recency_Days,
-        COUNT(DISTINCT transaction_id) AS Frequency_Orders,
-        SUM(online_spend + offline_spend) AS Monetary_Spend
-    FROM transactions
-    GROUP BY customer_id
-),
-RFM_Scoring AS (
-    SELECT
-        customer_id,
-        Recency_Days,
-        Frequency_Orders,
-        Monetary_Spend,
-        NTILE(4) OVER (ORDER BY Recency_Days DESC) AS R_Score,
-        NTILE(4) OVER (ORDER BY Frequency_Orders ASC) AS F_Score,
-        NTILE(4) OVER (ORDER BY Monetary_Spend ASC) AS M_Score
-    FROM RFM_Base
-)
-SELECT
-    customer_id,
-    Recency_Days,
-    Frequency_Orders,
-    Monetary_Spend,
-    CONCAT(R_Score, F_Score, M_Score) AS RFM_Cell,
-    CASE
-        WHEN R_Score = 4 AND F_Score = 4 AND M_Score = 4 THEN '1. VIPs'
-        WHEN R_Score >= 3 AND F_Score >= 3 THEN '2. Loyal Customers'
-        WHEN R_Score >= 3 AND F_Score <= 2 THEN '3. Potential / New'
-        WHEN R_Score <= 2 AND F_Score >= 3 THEN '4. At Risk (Big Spenders)'
-        WHEN R_Score <= 2 AND F_Score <= 2 THEN '5. Lost Customers'
-        ELSE '6. Average / Regular'
-    END AS RFM_Segment
-FROM RFM_Scoring
-ORDER BY RFM_Segment, Monetary_Spend DESC;
+
 
